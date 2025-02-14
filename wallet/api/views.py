@@ -31,23 +31,34 @@ class WalletViewSet(viewsets.ModelViewSet):
         return Wallet.objects.filter(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        # Check if user already has a wallet
-        existing_wallet = Wallet.objects.filter(user=request.user).first()
-        if existing_wallet:
-            return Response(
-                {"error": "User already has a wallet"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
         try:
-            # Generate new wallet
+            # Check if user already has a wallet
+            existing_wallet = Wallet.objects.filter(user=request.user).first()
+            
+            if existing_wallet:
+                # Return existing wallet details instead of error
+                serializer = self.get_serializer(existing_wallet)
+                response_data = {
+                    'wallet': serializer.data,
+                    'message': 'Existing wallet found',
+                    'is_new': False
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
+
+            # Generate new wallet if none exists
             wallet = Wallet.generate_wallet(request.user)
             serializer = self.get_serializer(wallet)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            response_data = {
+                'wallet': serializer.data,
+                'message': 'New wallet created successfully',
+                'is_new': True
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+            
         except Exception as e:
-            logger.error(f"Wallet creation failed: {str(e)}")
+            logger.error(f"Wallet operation failed: {str(e)}")
             return Response(
-                {"error": "Failed to create wallet"},
+                {"error": f"Wallet operation failed: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
