@@ -20,7 +20,7 @@ SECRET_KEY = 'django-insecure-ze&y_y+zf98b#a=tob^7n$ts6e3clv0kb9nw^84%3t)d)xy&8s
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1', '10.0.2.2','192.168.1.100']
+ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1', '10.0.2.2','192.168.1.100', "shine.startechsarl.com"]
 
 # Increase timeout settings
 BITCOIN_NETWORK_TIMEOUT = 60  # seconds
