@@ -178,5 +178,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 
-BITCOIN_TESTNET = True  # Now using real Bitcoin network
+BITCOIN_TESTNET = False  # Now using real Bitcoin network
 BITCOIN_NETWORK_TIMEOUT = 10  # seconds
